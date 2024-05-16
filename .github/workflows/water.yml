@@ -11,7 +11,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
-    # - run: |
-    #
-env:
-  CI: false
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.8"
+      - run: |
+            python3.8 -m pip install -r requirements.txt
+            echo "front" | sudo -S systemctl restart water-frontend.service
