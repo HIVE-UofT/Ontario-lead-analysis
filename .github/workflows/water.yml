@@ -1,0 +1,17 @@
+name: water-frontend CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+    # - run: |
+    #
+env:
+  CI: false
