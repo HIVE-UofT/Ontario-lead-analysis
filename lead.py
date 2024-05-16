@@ -12,17 +12,30 @@ import altair as alt
 lead_excel = pd.ExcelFile("./refined_master.xlsx")
 master = lead_excel.parse("master")
 
-years = master["Year"].unique().tolist()
+def clean_name(dws_name):
+    proned_name = " ".join(dws_name.split(" ")[1:-1])
+    return proned_name.strip()
+
+def clean_year(year_name):
+    return int(str(year_name)[0:4])
+
+master.insert(loc=4, column="DWS Name cleaned", value=master["DWS Name"].apply(lambda x: clean_name(x)))
+master.insert(loc=4, column="Year cleaned", value=master["Year"].apply(lambda x: clean_year(x)))
+
+years = master["Year cleaned"].unique().tolist()
 categories = master["DWS Category"].unique().tolist()
-dws_names = master["DWS Name"].unique().tolist()
+dws_names = master["DWS Name cleaned"].unique().tolist()
 
 # multi select
 # _years = years # [201920]
 # _categories = categories # ['Public School']
 # _school_name = 'R243 LAMBTON KENT COMP S (5473)'
 
+def apply_filters(_school_name, _categories, _years):
+    return master[master["Year cleaned"].isin(_years)][master["DWS Category"].isin(_categories)][master["DWS Name cleaned"] == _school_name]
+    
 def get_pie(_school_name, _categories, _years):
-    result = master[master["Year"].isin(_years)][master["DWS Category"].isin(_categories)][master["DWS Name"] == _school_name]
+    result = apply_filters(_school_name, _categories, _years)
     # Pie chart
     pie_data = pd.DataFrame(result.groupby(['Exceed2'])['Exceed2'].count())
     pie_result = {}
@@ -49,7 +62,7 @@ def get_pie(_school_name, _categories, _years):
 
 
 def get_histogram(_school_name, _categories, _years):
-    result = master[master["Year"].isin(_years)][master["DWS Category"].isin(_categories)][master["DWS Name"] == _school_name]
+    result = apply_filters(_school_name, _categories, _years)
     colors = ['#FF5733', '#C70039', '#900C3F', '#581845', '#36404D']
     histogram = alt.Chart(result).mark_bar(
         color=colors[0],
@@ -77,9 +90,9 @@ def get_histogram(_school_name, _categories, _years):
 
 
 def get_line(_school_name, _categories, _years):
-    result = master[master["Year"].isin(_years)][master["DWS Category"].isin(_categories)][master["DWS Name"] == _school_name]
+    result = apply_filters(_school_name, _categories, _years)
     colors = ['#FF5733', '#C70039', '#900C3F', '#581845', '#36404D']
-    year_exceed = pd.DataFrame(result.groupby(['Year','Exceed2'])['Exceed2'].count())
+    year_exceed = pd.DataFrame(result.groupby(['Year cleaned','Exceed2'])['Exceed2'].count())
     years_ratio = {
         year: {
             "N": 0,
@@ -94,14 +107,14 @@ def get_line(_school_name, _categories, _years):
         years_ratio[year] = 0 if distribution[criteria] == 0 else distribution[criteria]/(distribution["N"]+distribution["Y"])
 
     line_data = pd.DataFrame({
-        'Year': [str(year) for year in years_ratio.keys()],
+        'Year cleaned': [str(year) for year in years_ratio.keys()],
         f'{criteria} ratio': years_ratio.values()
     })
 
     line_chart = alt.Chart(line_data).mark_line(
         color=colors[0]
     ).encode(
-        x='Year',
+        x='Year cleaned',
         y=f'{criteria} ratio'
     ).properties(
         width=600,
