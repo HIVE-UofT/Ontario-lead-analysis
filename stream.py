@@ -1,17 +1,6 @@
 import lead as ld
 import streamlit as st
 
-st.markdown(
-    """
-    <style>
-    .css-1be9jtil-selector {
-        background-color: #00ff00;  /* Change the background color to green */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 school_name = st.selectbox(
     "School Name:",
     ld.dws_names,

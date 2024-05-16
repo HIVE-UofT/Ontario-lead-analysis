@@ -73,7 +73,7 @@ def get_histogram(_school_name, _categories, _years):
     ).properties(
         width=600,
         height=400,
-        title='Lead Distribution'
+        title='Lead Histogram'
     ).configure_title(
         fontSize=20,
         font='Helvetica',
@@ -114,7 +114,7 @@ def get_line(_school_name, _categories, _years):
     line_chart = alt.Chart(line_data).mark_line(
         color=colors[0]
     ).encode(
-        x='Year cleaned',
+        alt.X('Year cleaned', title='Year'),
         y=f'{criteria} ratio'
     ).properties(
         width=600,
