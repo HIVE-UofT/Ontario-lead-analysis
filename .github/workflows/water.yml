@@ -17,4 +17,4 @@ jobs:
           python-version: "3.8"
       - run: |
             python3.8 -m pip install -r requirements.txt
-            echo "front" | sudo -S systemctl restart water-frontend.service
+            echo "front" | sudo -S systemctl restart water-backend.service
