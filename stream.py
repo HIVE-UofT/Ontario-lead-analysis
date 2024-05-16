@@ -21,10 +21,20 @@ categories = st.multiselect(
     ld.categories[0:2]
     )
 
-pie = ld.get_pie(school_name, categories, years)
-histogram = ld.get_histogram(school_name, categories, years)
-line = ld.get_line(school_name, categories, years)
+run_diagrams = True
+if len(categories) == 0:
+    run_diagrams = False
+    st.write("Please choose at least one category.")
 
-st.altair_chart(pie, use_container_width= True)
-st.altair_chart(histogram, use_container_width= True)
-st.altair_chart(line, use_container_width= True)
+if len(years) == 0:
+    run_diagrams = False
+    st.write("Please choose at least one year.")
+
+if run_diagrams:
+    pie = ld.get_pie(school_name, categories, years)
+    histogram = ld.get_histogram(school_name, categories, years)
+    line = ld.get_line(school_name, categories, years)
+
+    st.altair_chart(pie, use_container_width= True)
+    st.altair_chart(histogram, use_container_width= True)
+    st.altair_chart(line, use_container_width= True)
