@@ -688,7 +688,7 @@
 
         </div>
 
-        <div class="buildingbox active-buildingbox">
+        <div class="buildingbox active-buildingbox" style="display: none;">
             <div class="topbox-container">
                 <div class="topbox">
                     <p id="institution"></p>
@@ -792,6 +792,12 @@
 
     $("#filterOn").change(function () {
         console.log($(this).val())
+        const elementToHide = document.querySelector("body > div > div > div.buildingbox.active-buildingbox");
+        if (elementToHide) {
+            elementToHide.style.display = 'block';
+        } else {
+            console.log('Element not found');
+        }
         ui.render($(this).val())
 
     })
