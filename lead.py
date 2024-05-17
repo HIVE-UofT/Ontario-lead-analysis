@@ -19,12 +19,12 @@ def clean_name(dws_name):
 def clean_year(year_name):
     return int(str(year_name)[0:4])
 
-master.insert(loc=4, column="DWS Name cleaned", value=master["DWS Name"].apply(lambda x: clean_name(x)))
-master.insert(loc=4, column="Year cleaned", value=master["Year"].apply(lambda x: clean_year(x)))
+# master.insert(loc=4, column="DWS Name cleaned", value=master["DWS Name"].apply(lambda x: clean_name(x)))
+master.insert(loc=4, column="Year cleared", value=master["Year"].apply(lambda x: clean_year(x)))
 
-years = master["Year cleaned"].unique().tolist()
+years = master["Year cleared"].unique().tolist()
 categories = master["DWS Category"].unique().tolist()
-dws_names = master["DWS Name cleaned"].unique().tolist()
+dws_names = master["DWS Name cleared"].unique().tolist()
 
 # multi select
 # _years = years # [201920]
@@ -32,8 +32,9 @@ dws_names = master["DWS Name cleaned"].unique().tolist()
 # _school_name = 'R243 LAMBTON KENT COMP S (5473)'
 
 def apply_filters(_school_name, _categories, _years):
-    return master[master["Year cleaned"].isin(_years)][master["DWS Category"].isin(_categories)][master["DWS Name cleaned"] == _school_name]
-    
+    return master[master["Year cleared"].isin(_years)][master["DWS Category"].isin(_categories)][master["DWS Name cleared"] == _school_name]
+
+
 def get_pie(_school_name, _categories, _years):
     result = apply_filters(_school_name, _categories, _years)
     # Pie chart
@@ -57,7 +58,7 @@ def get_pie(_school_name, _categories, _years):
             fontWeight='bold',
             color='black'
         )
-    pie.save("pie.html", format="html")
+    # pie.save("pie.html", format="html")
     return pie
 
 
@@ -85,14 +86,14 @@ def get_histogram(_school_name, _categories, _years):
         labelColor=colors[2],
         titleColor=colors[3]
     )
-    histogram.save("hist.html", format="html")
+    # histogram.save("hist.html", format="html")
     return histogram
 
 
 def get_line(_school_name, _categories, _years):
     result = apply_filters(_school_name, _categories, _years)
     colors = ['#FF5733', '#C70039', '#900C3F', '#581845', '#36404D']
-    year_exceed = pd.DataFrame(result.groupby(['Year cleaned','Exceed2'])['Exceed2'].count())
+    year_exceed = pd.DataFrame(result.groupby(['Year cleared','Exceed2'])['Exceed2'].count())
     years_ratio = {
         year: {
             "N": 0,
@@ -107,14 +108,14 @@ def get_line(_school_name, _categories, _years):
         years_ratio[year] = 0 if distribution[criteria] == 0 else distribution[criteria]/(distribution["N"]+distribution["Y"])
 
     line_data = pd.DataFrame({
-        'Year cleaned': [str(year) for year in years_ratio.keys()],
+        'Year cleared': [str(year) for year in years_ratio.keys()],
         f'{criteria} ratio': years_ratio.values()
     })
 
     line_chart = alt.Chart(line_data).mark_line(
         color=colors[0]
     ).encode(
-        alt.X('Year cleaned', title='Year'),
+        alt.X('Year cleared', title='Year'),
         y=f'{criteria} ratio'
     ).properties(
         width=600,
@@ -131,5 +132,5 @@ def get_line(_school_name, _categories, _years):
         labelColor=colors[2],
         titleColor=colors[3]
     )
-    line_chart.save("line.html", format="html")
+    # line_chart.save("line.html", format="html")
     return line_chart
