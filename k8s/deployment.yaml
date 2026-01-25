@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ontario-lead-analysis
+  namespace: hivelab-static-webpage
+  labels:
+    app.kubernetes.io/name: ontario-lead-analysis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ontario-lead-analysis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ontario-lead-analysis
+
+    spec:
+      serviceAccountName: ontario-lead-analysis-app
+      imagePullSecrets:
+        - name: ontario-lead-analysis-harbor
+      containers:
+        - name: ontario-lead-analysis
+          image: harbor.fedlify.com/hivelab-static-webpage/ontario-lead-analysis:latest
+          ports:
+            - containerPort: 8501
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+
+

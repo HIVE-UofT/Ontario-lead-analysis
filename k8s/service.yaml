@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ontario-lead-analysis
+  namespace: hivelab-static-webpage
+spec:
+  selector:
+    app.kubernetes.io/name: ontario-lead-analysis
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8501
