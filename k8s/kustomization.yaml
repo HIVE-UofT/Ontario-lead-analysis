@@ -10,4 +10,4 @@ resources:
 
 images:
   - name: harbor.fedlify.com/hivelab-static-webpage/ontario-lead-analysis
-    newTag: latest
+    newTag: manual-test
