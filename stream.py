@@ -5,7 +5,10 @@ school_name = st.selectbox(
     "School Name:",
     ld.dws_names,
     # default option
-    index=ld.dws_names.index('LAMBTON KENT COMP S'))
+    index=next(
+        (index for index, name in enumerate(ld.dws_names) if name.startswith('LAMBTON KENT COMP S')),
+        0,
+    ))
 
 years = st.multiselect(
     "Year:",

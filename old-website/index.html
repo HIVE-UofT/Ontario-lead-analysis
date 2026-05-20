@@ -1,0 +1,1153 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Toronto Star</title>
+    <script src="https://misc.thestar.com/interactivegraphic/libraries/d3v5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet">
+
+    <style>
+
+
+        body {
+            margin: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            background-color: #f8f8f8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .clearfix:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+
+        .clearfix {
+            display: block;
+        }
+
+        .database-outer-wrapper {
+            padding: 1px 0;
+            overflow: hidden;
+        }
+
+        .database-wrapper {
+            max-width: 690px;
+            margin: 24px auto 48px;
+            padding: 48px 0 96px;
+            border-top: 2px solid #aaa;
+            border-bottom: 2px solid #aaa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+        }
+
+        p.databasehead {
+            margin: 0;
+            padding-bottom: 8px;
+            color: #c4803d;
+            line-height: 1.2em;
+            font-size: 24px;
+            letter-spacing: 0.8px;
+            font-weight: 400;
+        }
+
+        p.introtext {
+            margin: 0;
+            line-height: 1.3em;
+            color: #666;
+            font-size: 18px;
+            padding-bottom: 8px;
+        }
+
+        p.introtext a {
+            color: #0072bc;
+        }
+
+
+        .searchbox {
+            margin: 56px auto;
+            width: 100%;
+        }
+
+        .searchbox-title {
+            margin: 0;
+            padding-bottom: 12px;
+            font-size: 12px;
+            line-height: 1.2em;
+            letter-spacing: 0.5px;
+            text-transform: lowercase;
+            color: #888;
+            font-style: italic;
+            text-transform: uppercase;
+        }
+
+        .searchbox-title span {
+            display: block;
+            font-style: italic;
+            font-size: 15px;
+            line-height: 1.2em;
+        }
+
+        #filterOn {
+            font-size: 18px;
+            line-height: 1.4em;
+            border-radius: 4px;
+            width: 100%;
+            border: 1px solid #aaa;
+            margin-bottom: 8px;
+            padding: 8px;
+            display: block;
+            color: #404040;
+            text-transform: uppercase;
+            background-color: #f8f8f8;
+        }
+
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: #bbb;
+            opacity: 1; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #bbb;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #bbb;
+        }
+
+        #filterOn:focus {
+            border-color: #c4803d;
+        }
+
+        .filterListContainer {
+            width: 100%;
+            height: 0;
+            position: relative;
+
+        }
+
+        #filterList {
+            margin: 0;
+            width: 100%;
+            border: 1px solid #888;
+            height: auto;
+            max-height: 185px;
+            overflow-y: scroll;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 8px;
+
+            /* text-transform: uppercase;*/
+            background-color: #f8f8f8;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        .activefilter {
+            display: block !important;
+        }
+
+        .filterListItem {
+            cursor: pointer;
+            padding: 8px;
+            font-size: 15px;
+            line-height: 1.2em;
+            color: #666;
+        }
+
+        .filterListItem span {
+            font-size: 13px;
+        }
+
+        .filterListItem:hover {
+            background: #f3e5d8;
+        }
+
+
+        /*///////// SCHOOL BOX //////////*/
+
+        .buildingbox {
+            transition: opacity 0.3s ease-out;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .active-buildingbox {
+            opacity: 1;
+            height: auto;
+        }
+
+        .buildingbox p {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.3em;
+            color: #555;
+        }
+
+        .topbox-container {
+            /* display: flex;*/
+            border-bottom: 1px solid #aaa;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+        }
+
+        .topbox {
+            /*margin-right: 48px;*/
+            /*flex-basis: 80%;*/
+            /*  border-right: 1px solid #aaa;*/
+        }
+
+        .topbox p {
+            font-size: 18px;
+            /* letter-spacing: 0.2px;*/
+            line-height: 1.3em;
+            color: #666;
+            width: 100%;
+            margin: 0;
+            padding-bottom: 4px;
+        }
+
+        #institution {
+            font-size: 24px;
+            color: #c4803d;
+            line-height: 1.1em;
+        }
+
+
+        p.datalabel {
+            color: #888;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            display: block;
+            line-height: 1.3em;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .phucontainer {
+            padding: 12px 0 0;
+        }
+
+        #phulabel {
+            padding-bottom: 0px
+        }
+
+        p.ratedetail {
+            font-size: 15px;
+        }
+
+        /* #ratebox {
+           height: auto;
+         }
+
+         #ratebox p.totaldetail {
+           padding-bottom: 8px;
+         }*/
+
+        p.ratenumber {
+            font-size: 100px;
+            line-height: 1em;
+            color: #c4803d;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+        }
+
+        p.ratenumber span {
+            font-size: 0.7em;
+            margin-left: 2px;
+        }
+
+        .topline {
+            width: 100%;
+            display: flex;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #aaa;
+        }
+
+        .toplinebox {
+            flex-basis: 50%;
+            border-right: 1px solid #aaa;
+            margin-right: 28px;
+            padding-right: 28px;
+            height: 100px;
+            position: relative;
+            z-index: 99;
+        }
+
+
+        .toplinebox:last-of-type {
+            border-right: none;
+            margin-right: 0;
+            padding-right: 0;
+            /*   flex-basis: 30%;*/
+        }
+
+
+        p.notetext {
+            color: #888;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            display: block;
+            padding: 16px 0 4px;
+            line-height: 1.3em;
+        }
+
+        p.testnumber {
+            position: absolute;
+            bottom: 0;
+            font-size: 50px;
+            line-height: 1em;
+            color: #c4803d;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+        }
+
+
+        #iicon {
+            color: #fff;
+            background-color: #a0a0a0;
+            width: 16px;
+            height: 16px;
+            font-size: 12px;
+            line-height: 18px;
+            margin: 0 4px 0 0;
+            display: inline-block;
+            text-align: center;
+            text-transform: lowercase;
+            border-radius: 100%;
+            cursor: pointer;
+            font-variant: normal;
+        }
+
+        #iicon:hover {
+            background-color: #c4803d;
+        }
+
+
+        .openclosebutton {
+            display: none;
+            cursor: pointer;
+            position: relative;
+            margin: 40px auto 8px;
+            width: 265px;
+            /* border: 1px solid #c4803d;*/
+            border-radius: 4px;
+            padding-right: 28px;
+        }
+
+        .openclosebutton:hover p {
+            color: #c4803d;
+            /*border: 1px solid #c4803d;*/
+
+        }
+
+
+        .openclosebutton p {
+            font-size: 16px;
+            line-height: 20px;
+            text-align: center;
+            width: 100%;
+            height: 20px;
+            margin: 0;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #888;
+            padding-bottom: 40px;
+        }
+
+        .hiddenbutton {
+            display: none;
+        }
+
+        .openclosebuttonvisible {
+            display: block;
+        }
+
+        .arrow {
+            transition: 0.3s;
+            transform: rotate(0deg);
+            pointer-events: none;
+            width: 20px;
+            /*float: right;
+            display: inline;*/
+            display: block;
+            margin: -20px auto 0;
+
+        }
+
+        .arrowroate {
+            transform: rotate(-180deg);
+            transition: 0.3s;
+        }
+
+        .arrow svg {
+            fill: none;
+            stroke: #888;
+            stroke-miterlimit: 10;
+            width: 20px;
+            margin: 0 auto;
+            display: block;
+            stroke-width: 3px;
+        }
+
+        .openclosebutton:hover svg {
+            stroke: #c4803d;
+            /*border: 1px solid #c4803d;*/
+        }
+
+
+        /*///////// EXCEEDENCE TABLE //////////*/
+
+
+        .exceedance-list {
+            display: none;
+            margin-top: 32px;
+        }
+
+        .exceedance-list-active {
+            display: block;
+        }
+
+        #exceedance-table {
+            border-collapse: collapse;
+            color: #666;
+            width: 100%;
+        }
+
+        #exceedance-table th {
+            color: #888;
+            text-transform: uppercase;
+            font-size: 12px;
+            margin-right: 2px;
+            text-align: left;
+            padding: 0 40px 4px 0;
+            font-weight: 400;
+            border-bottom: 1px solid #aaa;
+            vertical-align: bottom;
+        }
+
+        #exceedance-table td {
+            font-size: 14px;
+            line-height: 1.2em;
+            padding: 8px 40px 6px 0;
+            vertical-align: top;
+            border-bottom: 1px solid #aaa;
+        }
+
+        #exceedance-table th:first-of-type, #exceedance-table td:first-of-type {
+            width: 50%;
+        }
+
+        #exceedance-table th:last-of-type, #exceedance-table td:last-of-type {
+            padding-right: 0;
+            width: 165px;
+        }
+
+        #exceedance-table td.resultscell {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .resultbox {
+            padding: 8px 8px 6px 8px;
+            width: 70px;
+            display: inline-block;
+            color: #333;
+
+        }
+
+
+        /*///////// YEAR TABLE //////////*/
+
+        .yeartable {
+            width: 100%;
+            border-collapse: collapse;
+            color: #666;
+        }
+
+        .yeartable th {
+            color: #888;
+            text-transform: lowercase;
+            font-size: 12px;
+            margin-right: 2px;
+            text-align: left;
+            padding: 0 40px 4px 0;
+            font-weight: 400;
+            border-bottom: 1px solid #aaa;
+            vertical-align: bottom;
+            text-transform: uppercase;
+        }
+
+        .yeartable td {
+            font-size: 14px;
+            line-height: 1.2em;
+            padding: 8px 40px 6px 0;
+            vertical-align: top;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .yeartable th:first-of-type, .yeartable td:first-of-type {
+            width: 50%;
+        }
+
+        .yeartable th:last-of-type, .yeartable td:last-of-type {
+            padding-right: 0;
+        }
+
+
+        @media (max-width: 530px) {
+
+            p.databasehead {
+                font-size: 18px;
+            }
+
+            p.introtext {
+                font-size: 16px;
+            }
+
+            .searchbox-title {
+                font-size: 13px;
+                line-height: 1.2em;
+            }
+
+            .searchbox-title span {
+                font-size: 14px;
+            }
+
+            #filterOn {
+                padding: 4px;
+            }
+
+            #filterList {
+                padding: 4px;
+            }
+
+            .filterListItem {
+                padding: 4px;
+            }
+
+            .topbox-container {
+                display: block;
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+            }
+
+            .topbox {
+                width: 100%;
+                margin-right: 0;
+                padding-right: 0;
+
+            }
+
+            .topbox p {
+                font-size: 16px;
+            }
+
+            #institution {
+                font-size: 20px;
+            }
+
+
+            p.ratedetail {
+                font-size: 12px;
+            }
+
+            p.ratenumber {
+                font-size: 60px;
+            }
+
+            .toplinebox {
+                margin-right: 12px;
+                padding-right: 12px;
+                height: 120px;
+            }
+
+            p.testnumber {
+                font-size: 45px;
+            }
+
+            p.testnumber span {
+                margin-left: 1px;
+            }
+
+            .openclosebutton {
+                width: 222px;
+            }
+
+            .openclosebutton p {
+                font-size: 13px;
+            }
+
+            #exceedance-table th, .yeartable th {
+                padding: 0 20px 4px 0;
+                font-size: 11px;
+            }
+
+            #exceedance-table td, .yeartable td {
+                font-size: 12px;
+                padding: 8px 20px 6px 0;
+            }
+
+            #exceedance-table th:first-of-type, #exceedance-table td:first-of-type, .yeartable th:first-of-type, .yeartable td:first-of-type {
+                width: 40%;
+            }
+
+            .resultbox {
+                padding: 8px 4px 6px 4px;
+                width: 50px;
+            }
+
+            p.notetext {
+                font-size: 12px;
+
+            }
+
+            p.datalabel {
+                font-size: 12px;
+            }
+
+            .phucontainer {
+                padding: 4px 0 0;
+            }
+
+
+        }
+
+        @media (max-width: 300px) {
+
+            .toplinebox {
+                margin-right: 8px;
+                padding-right: 8px;
+                height: 110px;
+            }
+
+            p.totaldetail {
+                font-size: 14px;
+            }
+
+            p.testnumber {
+                font-size: 35px;
+            }
+
+            .topbox p {
+                font-size: 15px;
+            }
+
+            #exceedance-table th, .yeartable th {
+                padding: 0 16px 4px 0;
+                font-size: 11px;
+
+            }
+
+            #exceedance-table td, .yeartable td {
+                padding: 8px 16px 6px 0;
+                font-size: 12px;
+            }
+
+            .resultbox {
+                width: 40px;
+            }
+
+            p.datalabel {
+                font-size: 11px;
+            }
+
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="database-outer-wrapper">
+    <div class="database-wrapper">
+
+        <div class="searchbox">
+            <p class="databasehead">Search our database for lead levels in water at Ontario schools and daycares</p>
+            <p class="introtext">Test results from 2019/20 to the 2024/25 school year</p>
+            <p class="searchbox-title">Please do not include periods or accents in search</p>
+            <input autocomplete="off" type="text" id="filterOn" placeholder="School or daycare name"
+                   list="school_names">
+            <datalist id="school_names">
+
+            </datalist>
+
+        </div>
+
+        <div class="buildingbox active-buildingbox" style="display: none;">
+            <div class="topbox-container">
+                <div class="topbox">
+                    <p id="institution"></p>
+                    <p id="type"></p>
+                    <div class="phucontainer">
+                        <p class="datalabel" id="phulabel">Public health unit</p>
+                    </div>
+                </div>
+            </div>
+            <div class="topline">
+                <div class="toplinebox" id="passbox">
+                    <p class="datalabel totaldetail">Total tests from 2019/20 to 2024/25</p>
+                    <p class="testnumber" id="tests"></p>
+                </div>
+                <div class="toplinebox" id="failbox">
+                    <p class="datalabel totaldetail">Tests that exceeded 5 parts per billion</p>
+                    <p class="testnumber" id="testsover"></p>
+                </div>
+                <div class="toplinebox" id="ratebox">
+                    <p class="datalabel totaldetail">Failure rate</p>
+                    <p class="testnumber" id="testrate"></p>
+                </div>
+            </div>
+
+            <div id="donutchart"></div>
+
+
+
+
+            <table class="yeartable">
+                <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Tests</th>
+                    <th>Exceedances</th>
+                    <th>Failure rate</th>
+                </tr>
+                </thead>
+                <tbody id="yeartablebody">
+
+                </tbody>
+            </table>
+
+
+            <p class="notetext">Note: The data do not say which tap or fountain in the school or daycare had an
+                exceedance</p>
+
+
+            <div id="chart_div"></div>
+
+
+            <div class="openclosebutton showme openclosebuttonvisible">
+                <p class="morebutton hiddenbutton">See the exceedances</p>
+                <p class="lessbutton">Hide the exceedances</p>
+                <div class="arrow arrowroate">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                         x="0px" y="0px" viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;"
+                         xml:space="preserve">
+            <polyline class="st0" points="34,8 20,30 6,8 "></polyline>
+            </svg>
+                </div>
+            </div>
+
+            <div class="exceedance-list exceedance-list-active">
+                <table id="exceedance-table">
+                    <thead>
+                    <tr class="exceedancetableline">
+                        <th>Date</th>
+                        <th>Result (ppb)</th>
+                        <th>Test type</th>
+                    </tr>
+                    </thead>
+                    <tbody id="section_three_table_body">
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<script type="module">
+    import data from './js/final_limited.json' assert {type: 'json'};
+
+
+    for (var key in data) {
+        $("#school_names").append(` <option value="${key}"> `)
+    }
+
+
+    $("#filterOn").change(function () {
+        console.log($(this).val())
+        const elementToHide = document.querySelector("body > div > div > div.buildingbox.active-buildingbox");
+        if (elementToHide) {
+            elementToHide.style.display = 'block';
+        } else {
+            console.log('Element not found');
+        }
+        ui.render($(this).val())
+
+    })
+
+    function timeConverter(UNIX_timestamp) {
+        var a = new Date(UNIX_timestamp);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var time = date + ' ' + month + ' ' + year // + ' ' + hour + ':' + min + ':' + sec ;
+        return time;
+    }
+
+
+    const ui = {
+
+        render: function (name) {
+            $("#institution").html(name)
+            $("#type").html(data[name]["section0"]["Owner Legal Name"])
+            $("#phulabel").html(data[name]["section0"]["School Category"])
+            $("#tests").html(data[name]["section1"]["total tests"])
+            $("#testsover").html(data[name]["section1"]["exceedance"])
+            $("#testrate").html(`${data[name]["section1"]["failure rate"]}<span>%</span>`)
+
+            const section_two_data = data[name]["section2"]
+            $("#yeartablebody").html('')
+            for (const sectionTwoDataKey in section_two_data) {
+                $("#yeartablebody").append(`   <tr className="yeartableline">
+        <td>${sectionTwoDataKey}</td>
+        <td>${section_two_data[sectionTwoDataKey]["total tests"]}</td>
+        <td>${section_two_data[sectionTwoDataKey]["exceedance"]}</td>
+        <td>${section_two_data[sectionTwoDataKey]["failure rate"]}%</td>
+    </tr>`)
+            }
+
+
+            const section_three_data = data[name]["section3"]
+            $("#section_three_table_body").html('')
+
+
+            for (const sectionTwoDataKey in section_three_data) {
+                const time_formater = timeConverter(section_three_data[sectionTwoDataKey]["Sample Date"])
+                $("#section_three_table_body").append(`   <tr className="yeartableline">
+        <td>${time_formater}</td>
+        <td className="resultscell"><span className="resultbox" style="background-color: rgb(246, 235, 225)">${section_three_data[sectionTwoDataKey]["Result"]}</span>
+        </td>
+        <td>${section_three_data[sectionTwoDataKey]["Sample Type Name"]}</td>
+
+    </tr>`)
+            }
+
+
+            drawPileChart(data[name]["section1"]["exceedance"], (data[name]["section1"]["total tests"] - data[name]["section1"]["exceedance"]))
+
+            lineChart(data[name]["section2"])
+        }
+    }
+
+
+    google.charts.load("current", {packages: ["corechart"]});
+
+    // google.charts.setOnLoadCallback(drawChart);
+
+    function drawPileChart(yes, no) {
+
+
+        $("#donutchart").html("")
+        $("#donutchart").css("width", "900px")
+        $("#donutchart").css("height", "500px")
+
+
+        var data = google.visualization.arrayToDataTable([
+            ['Exceedance', 'Number Of Tests'],
+            ['Y', yes],
+            ['N', no],
+
+        ]);
+
+        var options = {
+            title: 'Exceedance',
+            pieHole: 0.4,
+            backgroundColor: "transparent",
+            slices: {
+                0: {color: 'Red'},
+                1: {color: 'Green'}
+            }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+    }
+
+    function lineChart(section2) {
+
+        $("#chart_div").html("")
+        $("#chart_div").css("width", "100%")
+        $("#chart_div").css("height", "500px")
+
+        const chartRows = [['Year', 'Exceedance Rate']];
+        Object.keys(section2).sort().forEach(function (yearKey) {
+            const schoolYear = `${yearKey.slice(0, 4)}/${yearKey.slice(4)}`;
+            chartRows.push([schoolYear, Number(section2[yearKey]["failure rate"]) || 0]);
+        });
+
+        const data = google.visualization.arrayToDataTable(chartRows);
+
+// Set Options
+        const options = {
+            title: 'Exceedance rate over the years',
+            hAxis: {title: 'Year'},
+            vAxis: {title: 'Exceedance Rate'},
+            legend: 'none',
+            backgroundColor:'transparent'
+        };
+
+// Draw
+        const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+
+</script>
+
+<script>
+
+    var thisname;
+    var thisid;
+    var thisdwsno;
+    var thistype;
+    var thisabove;
+    var thisbelow;
+    var leadrate;
+
+    var parseDate = d3.timeParse("%Y-%m-%d");
+    var formatTimeDay = d3.timeFormat("%b %e, %Y");
+
+    var resultsScale = d3.scaleLinear()
+        .domain([5, 200, 1000])
+        .range(['#f6ece2', '#cd945b', '#cd945b']);
+
+    var exceedancetablecontent;
+
+    var thistype = d3.scaleOrdinal().domain(["c", "v"]).range(["Child care centre", "Private school"]);
+    var thistest = d3.scaleOrdinal().domain(["s", "f"]).range(["Standing water", "Flushed water"]);
+
+    d3.csv("full-list.csv").then(function (data) {
+
+
+        onFilter();
+
+        function delay(callback, ms) {
+            var timer = 0;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    callback.apply(context, args);
+                }, ms || 0);
+            };
+        }
+
+
+        d3.select('#filterOn').on('keyup', delay(function (e) {
+            onFilter();
+        }, 500));
+
+
+        function onFilter() {
+
+            var filterText = d3.select('#filterOn').property('value').toUpperCase();
+
+
+            filteredData = data;
+
+            if (filterText != "") {
+                var filteredData = data.filter(function (d) {
+                    return (d.name.indexOf(filterText) >= 0);
+                });
+            }
+            ;
+
+
+            d3.select('#filterList').html(
+                filteredData.map(function (d, i) {
+                    return '<li class="filterListItem" data-id="' + d.id + '">' + d.name + '<br><span>' + (d.board) + '</span></li>';
+
+                }).join("")
+            );
+
+            if (filterText.length > 2 && filteredData.length != 0) {
+                d3.select('#filterList').classed('activefilter', true);
+            } else if (filterText.length > 2 && filteredData.length === 0) {
+                d3.select('#filterList').classed('activefilter', true).html("<li class='filterListItemNone'>No school or child care centre found</li>");
+            } else {
+                d3.select('#filterList').classed('activefilter', false);
+            }
+            ;
+
+            d3.selectAll('.filterListItem').on('click', runQuery);
+
+
+        };
+
+
+        function runQuery() {
+
+            thisname = d3.select(this).text();
+            thisid = d3.select(this).attr('data-id');
+
+            d3.select('#filterList').classed('activefilter', false);
+
+            d3.select('.fulllistbox').classed('hiddenlist', true);
+
+            loadData(thisid);
+
+            // document.getElementById('filterOn').value = thisname;
+
+
+        };
+
+
+        function loadData(m) {
+
+            d3.select('#institution').html(data[m].name);
+
+
+            d3.select('#type').html(data[m].board);
+            d3.select('#phu').html(data[m].phu);
+
+            thisabove = +data[m].ytot;
+            thisbelow = +data[m].ntot;
+
+            thisdwsno = data[m].dwsno;
+
+
+            d3.select('#tests').html(thisbelow + thisabove);
+            d3.select('#testsover').html(thisabove);
+
+            leadrate = d3.format(".0f")((thisabove / (thisabove + thisbelow)) * 100);
+
+            d3.select('#testrate').html(leadrate + "<span>%</span>");
+
+            d3.select('.openclosebutton').classed("openclosebuttonvisible", false);
+            d3.select('.exceedance-list').classed('exceedance-list-active', false);
+            d3.select('.morebutton').classed('hiddenbutton', false);
+            d3.select('.lessbutton').classed('hiddenbutton', true);
+
+
+            var yearcontent = '<tr class="yeartableline"><td>2016/17</td><td>' + (+data[m].n16 + +data[m].y16) + '</td><td>' + +data[m].y16 + '</td><td>' + d3.format(".0f")((+data[m].y16 / (+data[m].n16 + data[m].y16) || 0) * 100) + '%</td></tr><tr class="yeartableline"><td>2017/18</td><td>' + (+data[m].n17 + +data[m].y17) + '</td><td>' + +data[m].y17 + '</td><td>' + d3.format(".0f")((+data[m].y17 / (+data[m].n17 + +data[m].y17) || 0) * 100) + '%</td></tr><tr class="yeartableline"><td>2018/19</td><td>' + (+data[m].n18 + +data[m].y18) + '</td><td>' + +data[m].y18 + '</td><td>' + d3.format(".0f")((+data[m].y18 / (+data[m].n18 + +data[m].y18) || 0) * 100) + '%</td></tr><tr class="yeartableline"><td>2019/20</td><td>' + (+data[m].n19 + +data[m].y19) + '</td><td>' + +data[m].y19 + '</td><td>' + d3.format(".0f")((+data[m].y19 / (+data[m].n19 + +data[m].y19) || 0) * 100) + '%</td></tr>';
+
+
+            d3.select("#yeartablebody").html(yearcontent);
+
+
+            if (thisabove > 0) {
+                d3.select('.openclosebutton').classed("openclosebuttonvisible", true);
+            }
+            ;
+
+            d3.select('.buildingbox').classed('active-buildingbox', true);
+            resize();
+
+            d3.select('.morebutton').on('click', getExceedences);
+            d3.select('.arrowroate').classed('arrowroate', false);
+        };
+
+
+        function getExceedences() {
+
+            d3.select('.exceedance-list').classed('exceedance-list-active', true);
+            d3.select('.morebutton').classed('hiddenbutton', true);
+            d3.select('.lessbutton').classed('hiddenbutton', false);
+
+
+            d3.select('.arrow').classed('arrowroate', true);
+
+            d3.csv("exceedance-list.csv").then(function (exceedancedata) {
+
+
+                var filteredexceedancedata = exceedancedata.filter(function (d) {
+                    return (d.id.indexOf(thisdwsno) === 0);
+                });
+
+                exceedancetablecontent = '';
+
+
+                for (var i = 0; i < filteredexceedancedata.length; i++) {
+
+
+                    var exceedanceline = '<tr class="exceedancetableline"><td>' + formatTimeDay(parseDate(filteredexceedancedata[i].date)) + '</td><td class="resultscell"><span class="resultbox" style="background-color: ' + resultsScale(filteredexceedancedata[i].result) + '">' + filteredexceedancedata[i].result + '</span></td><td>' + thistest(filteredexceedancedata[i].type) + '</td></tr>';
+                    exceedancetablecontent += exceedanceline;
+
+                }
+
+
+                d3.select("#exceedance-table").html(function () {
+                    return "<tr class='exceedancetableline'><th>Date</th><th>Result (ppb)</th><th>Test type</th></tr>" + exceedancetablecontent;
+                });
+
+            });
+            resize();
+            setTimeout(function () {
+                resize();
+            }, 500);
+
+        };
+
+
+    });
+
+    d3.selectAll('.lessbutton').on('click', function () {
+        d3.selectAll('.morebutton').classed('hiddenbutton', false);
+        d3.selectAll('.lessbutton').classed('hiddenbutton', true);
+        d3.select('.exceedance-list').classed('exceedance-list-active', false);
+        d3.select('.arrowroate').classed('arrowroate', false);
+        resize();
+    });
+
+
+    document.addEventListener("touchstart", function () {
+    }, true);
+
+
+    function resize() {
+        var message = {
+            'resize':
+                {
+                    'iframe': 'leadschooldatabase',
+                    'height': document.getElementsByClassName('database-outer-wrapper')[0].offsetHeight + 20
+                }
+        };
+
+        parent.postMessage(message, "*");
+    };
+
+    window.addEventListener('load', function () {
+        resize();
+    });
+
+    window.addEventListener("resize", function () {
+        resize();
+    });
+
+    setTimeout(function () {
+        resize();
+    }, 800);
+
+
+</script>
+
+</body>
+</html>

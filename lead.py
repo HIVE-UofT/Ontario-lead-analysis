@@ -9,7 +9,7 @@ import altair as alt
 # master = master[master.columns.drop(list(master.filter(regex='Unnamed*')))]
 # master.to_excel("refined_master.xlsx", sheet_name = "master")
 
-lead_excel = pd.ExcelFile("./refined_master.xlsx")
+lead_excel = pd.ExcelFile("./new_year_refined_master.xlsx")
 master = lead_excel.parse("master")
 
 def clean_name(dws_name):
@@ -22,9 +22,9 @@ def clean_year(year_name):
 # master.insert(loc=4, column="DWS Name cleaned", value=master["DWS Name"].apply(lambda x: clean_name(x)))
 master.insert(loc=4, column="Year cleared", value=master["Year"].apply(lambda x: clean_year(x)))
 
-years = master["Year cleared"].unique().tolist()
-categories = master["DWS Category"].unique().tolist()
-dws_names = master["DWS Name cleared"].unique().tolist()
+years = sorted(master["Year cleared"].dropna().unique().tolist())
+categories = sorted(master["DWS Category"].dropna().unique().tolist())
+dws_names = sorted(master["DWS Name cleared"].dropna().unique().tolist())
 
 # multi select
 # _years = years # [201920]
