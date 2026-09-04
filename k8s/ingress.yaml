@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: ontario-lead-analysis.fedlify.com
+    - host: water.hivelab-uoft.ca
       http:
         paths:
           - path: /
@@ -24,6 +24,5 @@ spec:
 
   tls:
     - hosts:
-        - ontario-lead-analysis.fedlify.com
+        - water.hivelab-uoft.ca
       secretName: ontario-lead-analysis-tls
-
