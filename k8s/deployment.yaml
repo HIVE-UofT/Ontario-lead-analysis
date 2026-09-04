@@ -21,7 +21,7 @@ spec:
         - name: ontario-lead-analysis-harbor
       containers:
         - name: ontario-lead-analysis
-          image: harbor.fedlify.com/hivelab-static-webpage/ontario-lead-analysis:latest
+          image: harbor.fedlify.com/hivelab-sites/ontario-lead-analysis:latest
           ports:
             - containerPort: 8501
 
@@ -32,5 +32,4 @@ spec:
             limits:
               cpu: 250m
               memory: 256Mi
-
 
