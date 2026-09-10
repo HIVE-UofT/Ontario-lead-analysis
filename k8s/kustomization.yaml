@@ -11,4 +11,4 @@ namespace: hivelab-sites
 
 images:
   - name: harbor.fedlify.com/hivelab-sites/ontario-lead-analysis
-    newTag: branch-main
+    newTag: 9b452479-3c22-4c95-b98c-c44a53278279
