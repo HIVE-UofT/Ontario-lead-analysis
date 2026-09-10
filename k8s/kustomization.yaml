@@ -10,5 +10,5 @@ resources:
 namespace: hivelab-sites
 
 images:
-  - name: harbor.fedlify.com/hivelab-static-webpage/ontario-lead-analysis
+  - name: harbor.fedlify.com/hivelab-sites/ontario-lead-analysis
     newTag: branch-main

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ontario-lead-analysis
-  namespace: hivelab-static-webpage
+  namespace: hivelab-sites
   labels:
     app.kubernetes.io/name: ontario-lead-analysis
 spec:
@@ -23,7 +23,7 @@ spec:
         - name: ontario-lead-analysis
           image: harbor.fedlify.com/hivelab-sites/ontario-lead-analysis:latest
           ports:
-            - containerPort: 8501
+            - containerPort: 80
 
           resources:
             requests:
@@ -32,4 +32,3 @@ spec:
             limits:
               cpu: 250m
               memory: 256Mi
-
